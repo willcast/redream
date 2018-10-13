@@ -325,12 +325,14 @@ static int video_init(struct host *host) {
   /* reset */
   memset(&host->video, 0, sizeof(host->video));
 
-  /* immediately poll window size for platforms like Android where the window
-     starts fullscreen, ignoring the default width and height */
+  /* window size was zeroed */
   SDL_GetWindowSize(host->win, &host->video.width, &host->video.height);
 
   host->video.ctx = video_create_context(host);
+  CHECK_NOTNULL(host->video.ctx);
+
   host->video.r = r_create(host->video.width, host->video.height);
+  CHECK_NOTNULL(host->video.r);
 
   if (host->ui) {
     ui_vid_created(host->ui, host->video.r);
@@ -352,6 +354,27 @@ static int video_init(struct host *host) {
 static int video_restart(struct host *host) {
   video_shutdown(host);
   return video_init(host);
+}
+
+static void video_set_size(struct host *host, const int width, const int height) {
+  CHECK(width >= 0);
+  CHECK(height >= 0);
+
+  SDL_SetWindowSize(host->win, width, height);
+
+  host->video.width = width;
+  host->video.height = height;
+}
+
+static void video_set_size_from_option(struct host *host, const char *size) {
+  int width = -1, height = -1;
+  int n = sscanf(size, "%dx%d", &width, &height);
+
+  if ((n == 2) && (width >= 0) && (height >= 0)) {
+    video_set_size(host, width, height);
+  } else {
+    LOG_WARNING("attempted to set invalid window size %s", size);
+  }
 }
 
 /*
@@ -884,12 +907,11 @@ static void host_poll_events(struct host *host) {
 
       case SDL_WINDOWEVENT:
         if (ev.window.event == SDL_WINDOWEVENT_RESIZED) {
-          host->video.width = ev.window.data1;
-          host->video.height = ev.window.data2;
-
-          int res = video_restart(host);
-          CHECK(res, "video_restart failed");
+          video_set_size(host, ev.window.data1, ev.window.data2);
         }
+
+        int res = video_restart(host);
+        CHECK(res, "video_restart failed");
         break;
 
       case SDL_QUIT:
@@ -902,6 +924,14 @@ static void host_poll_events(struct host *host) {
   if (OPTION_fullscreen_dirty) {
     video_set_fullscreen(host, OPTION_fullscreen);
     OPTION_fullscreen_dirty = 0;
+  }
+
+  if (OPTION_size_dirty) {
+    video_set_size_from_option(host, OPTION_size);
+    OPTION_size_dirty = 0;
+
+    int res = video_restart(host);
+    CHECK(res, "video_restart failed");
   }
 
   if (OPTION_sync_dirty) {
@@ -955,6 +985,10 @@ static int host_init(struct host *host) {
 
   if (OPTION_fullscreen) {
     video_set_fullscreen(host, 1);
+  }
+
+  if (OPTION_size) {
+    video_set_size_from_option(host, OPTION_size);
   }
 
   if (!audio_init(host)) {

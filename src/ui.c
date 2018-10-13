@@ -939,6 +939,21 @@ static void ui_video_build(struct ui *ui) {
     }
   }
 
+  {
+    if (igOptionString("Window size", OPTION_size, btn_size)) {
+      int next = 0;
+      for (int i = 0; i < NUM_WINDOW_SIZES; i++) {
+        if (!strncmp(WINDOW_SIZES[i], OPTION_size, sizeof(OPTION_size))) {
+          next = (i + 1) % NUM_WINDOW_SIZES;
+          break;
+        }
+      }
+      strncpy(OPTION_size, WINDOW_SIZES[next], sizeof(OPTION_size));
+      OPTION_size_dirty = 1;
+    }
+  }
+
+
   igPopStyle_Btn();
 
   igEndChild();

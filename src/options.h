@@ -31,6 +31,9 @@ extern const int NUM_TIMESYNCS;
 extern const char *ASPECT_RATIOS[];
 extern const int NUM_ASPECT_RATIOS;
 
+extern const char *WINDOW_SIZES[];
+extern const int NUM_WINDOW_SIZES;
+
 extern struct button_map BUTTONS[];
 extern const int NUM_BUTTONS;
 
@@ -62,6 +65,7 @@ DECLARE_OPTION_INT(deadzone_3);
 
 /* emulator */
 DECLARE_OPTION_STRING(aspect);
+DECLARE_OPTION_STRING(size);
 
 /* bios */
 DECLARE_OPTION_STRING(region);

@@ -48,6 +48,16 @@ const char *ASPECT_RATIOS[] = {
 };
 const int NUM_ASPECT_RATIOS = ARRAY_SIZE(ASPECT_RATIOS);
 
+const char *WINDOW_SIZES[] = {
+  "320x240",
+  "640x480",
+  "1024x576",
+  "1280x720",
+  "1600x900",
+  "1920x1080",
+};
+const int NUM_WINDOW_SIZES = ARRAY_SIZE(WINDOW_SIZES);
+
 struct button_map BUTTONS[] = {
   {"B button",         K_CONT_B,          DIR_NONE, &OPTION_key_b,        &OPTION_key_b_dirty},
   {"A button",         K_CONT_A,          DIR_NONE, &OPTION_key_a,        &OPTION_key_a_dirty},
@@ -101,6 +111,7 @@ DEFINE_PERSISTENT_OPTION_INT(deadzone_3,   DEFAULT_DEADZONE,  "Deadzone for cont
 
 /* emulator */
 DEFINE_PERSISTENT_OPTION_STRING(aspect,    "4:3",             "Video aspect ratio");
+DEFINE_PERSISTENT_OPTION_STRING(size,      "1024x576",        "Window size");
 
 /* bios */
 DEFINE_PERSISTENT_OPTION_STRING(region,    "usa",             "System region");
