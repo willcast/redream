@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -106,8 +106,7 @@ NACLAUDIO_OpenDevice(_THIS, void *handle, const char *devname, int iscapture) {
     
     private = (SDL_PrivateAudioData *) SDL_calloc(1, (sizeof *private));
     if (private == NULL) {
-        SDL_OutOfMemory();
-        return 0;
+        return SDL_OutOfMemory();
     }
     
     private->mutex = SDL_CreateMutex();
@@ -131,7 +130,7 @@ NACLAUDIO_OpenDevice(_THIS, void *handle, const char *devname, int iscapture) {
     /* Start audio playback while we are still on the main thread. */
     ppb_audio->StartPlayback(private->audio);
     
-    return 1;
+    return 0;
 }
 
 static int

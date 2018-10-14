@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -19,10 +19,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#if HAVE_SIGNAL_H
-#include <signal.h>
-#endif
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten/emscripten.h>
@@ -104,11 +100,6 @@ fillerup(void *unused, Uint8 * stream, int len)
 }
 
 static int done = 0;
-void
-poked(int sig)
-{
-    done = 1;
-}
 
 #ifdef __EMSCRIPTEN__
 void

@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -328,6 +328,9 @@ EMSCRIPTENAUDIO_OpenDevice(_THIS, void *handle, const char *devname, int iscaptu
 static int
 EMSCRIPTENAUDIO_Init(SDL_AudioDriverImpl * impl)
 {
+    int available;
+    int capture_available;
+
     /* Set the function pointers */
     impl->OpenDevice = EMSCRIPTENAUDIO_OpenDevice;
     impl->CloseDevice = EMSCRIPTENAUDIO_CloseDevice;
@@ -339,7 +342,7 @@ EMSCRIPTENAUDIO_Init(SDL_AudioDriverImpl * impl)
     impl->ProvidesOwnCallbackThread = 1;
 
     /* check availability */
-    const int available = EM_ASM_INT_V({
+    available = EM_ASM_INT_V({
         if (typeof(AudioContext) !== 'undefined') {
             return 1;
         } else if (typeof(webkitAudioContext) !== 'undefined') {
@@ -352,7 +355,7 @@ EMSCRIPTENAUDIO_Init(SDL_AudioDriverImpl * impl)
         SDL_SetError("No audio context available");
     }
 
-    const int capture_available = available && EM_ASM_INT_V({
+    capture_available = available && EM_ASM_INT_V({
         if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) {
             return 1;
         } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') {

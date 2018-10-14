@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -284,17 +284,6 @@ MIR_InitMouse()
 void
 MIR_FiniMouse()
 {
-    SDL_Mouse* mouse = SDL_GetMouse();
-
-    MIR_FreeCursor(mouse->def_cursor);
-    mouse->def_cursor = NULL;
-
-    mouse->CreateCursor         = NULL;
-    mouse->ShowCursor           = NULL;
-    mouse->FreeCursor           = NULL;
-    mouse->WarpMouse            = NULL;
-    mouse->CreateSystemCursor   = NULL;
-    mouse->SetRelativeMouseMode = NULL;
 }
 
 #endif /* SDL_VIDEO_DRIVER_MIR */
