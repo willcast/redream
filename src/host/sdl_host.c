@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <SDL_hints.h>
 #include "core/core.h"
 #include "core/filesystem.h"
 #include "core/profiler.h"
@@ -975,6 +976,10 @@ static int host_init(struct host *host) {
   /* init sdl and create window */
   int res = SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
   CHECK_GE(res, 0, "host_create sdl initialization failed: %s", SDL_GetError());
+
+  /* Disable High DPI support because it confuses users when dealing with a
+   * fixed window size, plus we already scale UI to the window size. */
+  SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
   uint32_t win_flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
   host->win = SDL_CreateWindow("redream", SDL_WINDOWPOS_UNDEFINED,
