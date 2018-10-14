@@ -47,9 +47,8 @@ int fs_mediadirs(char *dirs, int num, size_t size) {
   char *end = dirs + size * num;
 
   /* search in the home directory */
-  static const char *home_search[] = {"Desktop", "Documents", "Downloads",
+  static const char *home_search[] = {"", "Desktop", "Documents", "Downloads",
                                       "Music",   "Pictures",  "Videos"};
-
   char home[PATH_MAX];
   int res = fs_userdir(home, sizeof(home));
 
