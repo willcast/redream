@@ -490,8 +490,8 @@ static void ui_insert_game(struct ui *ui, struct game *new_game) {
       return;
     }
 
-    /* find the sorted position to insert at */
-    if (strcmp(game->prodname, new_game->prodname) > 0) {
+    /* find the sorted position to insert at, if autosort is enabled */
+    if (OPTION_autosort && (strcmp(game->prodname, new_game->prodname) > 0)) {
       pos = i;
       break;
     }
@@ -1100,6 +1100,20 @@ static void ui_library_build(struct ui *ui) {
         page->adddir = 0;
       }
     }
+  }
+
+  /* autosort library yes/no */
+  {
+    igPushStyle_Btn();
+
+    const char *value_str = OPTION_autosort ? UI_STR_TRUE : UI_STR_FALSE;
+
+    if (igOptionString("Automatically sort games by title", value_str, btn_size)) {
+      OPTION_autosort = !OPTION_autosort;
+      OPTION_autosort_dirty = 1;
+    }
+
+    igPopStyle_Btn();
   }
 
   igEndChild();

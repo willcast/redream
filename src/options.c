@@ -123,6 +123,7 @@ DEFINE_OPTION_INT(perf,                    0,                 "Create maps for c
 
 /* ui */
 DEFINE_PERSISTENT_OPTION_STRING(gamedir,   "",                "Directories to scan for games");
+DEFINE_PERSISTENT_OPTION_INT(autosort,     1,                 "Automatically sort games by title");
 
 /* clang-format on */
 

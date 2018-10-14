@@ -77,6 +77,7 @@ DECLARE_OPTION_INT(perf);
 
 /* ui */
 DECLARE_OPTION_STRING(gamedir);
+DECLARE_OPTION_INT(autosort);
 
 int audio_sync_enabled();
 int video_sync_enabled();
